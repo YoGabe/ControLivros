@@ -7,18 +7,19 @@
     <link rel="stylesheet" href="stilo.css">
 </head>
 <body>
-    <div class="caixa-login">
+    <div class="card">
         <h1> Entrar na sua livraria </h1>
         <form action="cadastroInt.html" method="post">
             <label for="usuario"> Insira suas credenciais </label>
-            <input type="text" id="useuario" placeholder="seuemail@livraria.br" required><br><br>
-            <label for="senha"> Senha de acesso </label>
-            <input type="password" id="senha"placeholder="Digite sua senha" required> <br><br>
+            <input type="text" id="usuario" placeholder="seuemail@livraria.br" required><br>
+            <label for="senha"> Senha de acesso </label><br>
+            <input type="password" id="senha"placeholder="Digite sua senha" required> <br>
             <button type="button" class="btn-princ" id="btnConfirma"> Entrar </button> <br>
-            <p> Não tem cadastro? <a href="cadastroInt.html" class="btn-sec">  Cadastre-se aqui</a></p>
+            <p > Não tem cadastro? <a href="cadastroInt.html" class="btn-sec">  Cadastre-se aqui</a></p>
         </form>
+        <div class="mensagem" id="Feedback"></div>
     </div>
-    <div class="mensagem" id="Feedback"></div>
+    
     <script src="funcioInt.js"> </script>
 </body>
 </html>

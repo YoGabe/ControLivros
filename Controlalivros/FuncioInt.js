@@ -1,38 +1,51 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const btnConfirma = document.getElementById("btnConfirma");
     const feedback = document.getElementById("Feedback");
 
     btnConfirma.addEventListener("click", () => {
-        // Captura dos valores (no HTML do login o ID do email está como "useuario")
-        const emailInput = document.getElementById("useuario").value.trim();
+        const emailInput = document.getElementById("usuario").value.trim();
         const senhaInput = document.getElementById("senha").value;
 
+        // Limpa mensagens anteriores
+        feedback.innerText = "";
+        feedback.style.color = "";
+
         if (!emailInput || !senhaInput) {
-            exibirFeedback("Por favor, preencha o email e a senha.", "erro");
+            feedback.style.color = "red";
+            feedback.innerText = "Por favor, preencha todos os campos.";
             return;
         }
 
-        // Obter utilizador guardado no localStorage
-        const usuarioGuardado = JSON.parse(localStorage.getItem("usuarioCadastrado"));
+        // Procura os utilizadores gravados no localStorage
+        const utilizadores = JSON.parse(localStorage.getItem("utilizadoresControlivros")) || [];
 
-        if (!usuarioGuardado) {
-            exibirFeedback("Nenhum utilizador registado encontrado. Crie uma conta primeiro.", "erro");
+        // Procura pelo utilizador registado com esse email
+        const utilizadorEncontrado = utilizadores.find(user => user.email.toLowerCase() === emailInput.toLowerCase());
+
+        if (!utilizadorEncontrado) {
+            feedback.style.color = "red";
+            feedback.innerText = "Utilizador não encontrado. Verifique o email ou faça o cadastro.";
             return;
         }
 
-        // Validação de credenciais
-        if (emailInput === usuarioGuardado.email && senhaInput === usuarioGuardado.senha) {
-            exibirFeedback(`Bem-vindo(a), ${usuarioGuardado.nome}! Login efetuado com sucesso.`, "sucesso");
-            
-            // Aqui pode redirecionar para o painel principal do sistema após o login
-            // setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
-        } else {
-            exibirFeedback("Email ou senha incorretos. Tente novamente.", "erro");
+        if (utilizadorEncontrado.senha !== senhaInput) {
+            feedback.style.color = "red";
+            feedback.innerText = "Palavra-passe incorreta.";
+            return;
         }
+
+        // Sucesso no login
+        feedback.style.color = "green";
+        feedback.innerText = `Bem-vindo(a), ${utilizadorEncontrado.nome}! A redirecionar...`;
+
+        // Guarda o utilizador atualmente ligado/autenticado
+        localStorage.setItem("utilizadorLogado", JSON.stringify(utilizadorEncontrado));
+
+        // Redireciona para a página principal do sistema após .5s (ajuste o caminho da página se necessário)
+        setTimeout(() => {
+            // window.location.href = "dashboard.html";
+            alert("Login efetuado com sucesso!");
+        }, 500);
     });
-
-    function exibirFeedback(texto, tipo) {
-        feedback.textContent = texto;
-        feedback.style.color = tipo === "sucesso" ? "green" : "red";
-    }
 });
